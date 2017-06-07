@@ -67,17 +67,16 @@ void *conductor(void *pvoid)
 
 void *passenger(void *pvoid)
 {
+	srand((unsigned int)time(0));
 	int sleeptime;
 	sleeptime=rand()%10;
 	int i=(int )pvoid;
 	int takeon,takeoff;
-	takeoff=0;
+	takeon=rand()%10;
+	takeoff=rand()%(20-takeon+1)+takeon;
 	sleep(sleeptime);
 	printf("\t\t\t\t\t乘客%d: 我已经到达第%d车站，正在等车\n",i,takeon) ;
-	while(1)
-	{
-		
-	}
+	
     return NULL;
 }
 
@@ -95,11 +94,11 @@ int main()
 	pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
 	pthread_create(&pdriver,&attr,driver,NULL);
 	pthread_create(&pconductor,&attr,conductor,NULL);
-	for(i=1;i<=PASSENGERCOUNT;i++)
+	for(i=0;i<PASSENGERCOUNT;i++)
 	{
 
     	pthread_create(&ppassenger[i],&attr,passenger,(void *)i); 
-    	sleep(5); 
+    	sleep(2); 
 	}
 	
 	pthread_join(pdriver,NULL);
